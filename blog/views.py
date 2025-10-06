@@ -1,26 +1,35 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post, Category
 from .forms import PostForm
 from django.urls import reverse_lazy
-
 
 class PostListView(ListView):
     model = Post
     context_object_name = "posts"
+    template_name = "blog/post_list.html"  # Указываем явно шаблон
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.request.GET.get('category')
+        if category_id:
+            queryset = queryset.filter(categories__id=category_id)
+        return queryset
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = "blog/category_list.html"
+    context_object_name = "categories"
 
 class PostDetailView(DetailView):
     model = Post
     context_object_name = "post"
 
-
 class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy("post_list")
-
 
 class PostCreateView(CreateView):
     model = Post
@@ -31,12 +40,10 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('post_list')
-
 # def post_list(request):
 #     posts = Post.objects.all()
 #     return render(request, 'blog/post_list.html', {'posts': posts})

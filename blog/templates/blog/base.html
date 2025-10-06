@@ -19,6 +19,23 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Фильтр по категориям
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                            <li><a class="dropdown-item" href="{% url 'post_list' %}">Все посты</a></li>
+                            {% if categories and categories|length > 0 %}
+                            {% for category in categories %}
+                            <li><a class="dropdown-item" href="?category={{ category.id }}">{{ category.name }}</a></li>
+                            {% endfor %}
+                            {% else %}
+                            <li><a class="dropdown-item disabled">Нет категорий</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'post_create' %}">Создать пост</a></li>
