@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block title %}Форма поста{% endblock %}
+{% block content %}
+<h1>{% if not post %}Создать пост{% else %}Редактировать пост{% endif %}</h1>
+<form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+{% endblock %}
