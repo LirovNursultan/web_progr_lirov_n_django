@@ -1,10 +1,16 @@
 {% extends 'blog/base.html' %}
 {% block title %}Удалить пост{% endblock %}
 {% block content %}
-<h1>Удалить "{{ post.title }}"?</h1>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Да, удалить</button>
-    <a href="{% url 'post_detail' post.pk %}" class="btn btn-secondary">Отмена</a>
-</form>
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h1>Удалить "{{ post.title }}"?</h1>
+    </div>
+    <div class="card-body text-center">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="{% url 'post_detail' post.pk %}" class="btn btn-secondary ms-2">Отмена</a>
+        </form>
+    </div>
+</div>
 {% endblock %}

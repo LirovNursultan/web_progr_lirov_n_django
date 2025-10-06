@@ -1,20 +1,25 @@
 {% extends 'blog/base.html' %}
 {% block title %}Список постов{% endblock %}
 {% block content %}
-<h1 class="mb-4">Список постов</h1>
+<h1 class="mb-4 text-primary">Список постов</h1>
 {% if posts %}
-<div class="list-group">
+<div class="row row-cols-1 row-cols-md-2 g-4">
     {% for post in posts %}
-    <a href="{% url 'post_detail' post.pk %}" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">{{ post.title }}</h5>
-        <small>Автор: {{ post.author }} | {{ post.created_at }}</small>
-    </a>
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text text-muted">Автор: {{ post.author }} | {{ post.created_at|date:"d.m.Y H:i" }}</p>
+                <a href="{% url 'post_detail' post.pk %}" class="btn btn-outline-primary">Читать</a>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
 {% else %}
-<p class="alert alert-info">Пока постов нет.</p>
+<div class="alert alert-info text-center">Пока постов нет.</div>
 {% endif %}
 {% if user.is_authenticated %}
-<a href="{% url 'post_create' %}" class="btn btn-primary mt-3">Создать пост</a>
+<a href="{% url 'post_create' %}" class="btn btn-success mt-3">Создать пост</a>
 {% endif %}
 {% endblock %}
